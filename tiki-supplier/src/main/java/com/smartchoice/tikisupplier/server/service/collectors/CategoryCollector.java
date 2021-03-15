@@ -1,7 +1,5 @@
 package com.smartchoice.tikisupplier.server.service.collectors;
 
-import java.io.IOException;
-import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -66,8 +64,7 @@ public class CategoryCollector {
             URIBuilder builder = new URIBuilder(tikiApiEndpoint + "/integration/categories");
             HttpGet httpGet = new HttpGet(builder.build());
             httpGet.setHeader(tikiApiAuthKey, tikiApiAuthValue);
-            CloseableHttpResponse response = client.execute(httpGet);
-            try {
+            try (CloseableHttpResponse response = client.execute(httpGet)) {
                 String responseBody = EntityUtils.toString(response.getEntity());
                 int statusCode = response.getStatusLine().getStatusCode();
                 if (statusCode == 200) {
@@ -93,8 +90,6 @@ public class CategoryCollector {
                 } else {
                     log.info("Category collector: request {} response code {}", categoryRequest, statusCode);
                 }
-            } finally {
-                response.close();
             }
         } catch (Exception e) {
             log.error("Tiki supplier: Unexpected exception {}", categoryRequest, e);

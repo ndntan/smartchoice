@@ -66,8 +66,7 @@ public class ProductCollector {
         builder.setParameter("limit", String.valueOf(limit));
 
         HttpGet httpGet = new HttpGet(builder.build());
-        CloseableHttpResponse response = client.execute(httpGet);
-        try {
+        try (CloseableHttpResponse response = client.execute(httpGet)) {
             String responseBody = EntityUtils.toString(response.getEntity());
             int statusCode = response.getStatusLine().getStatusCode();
             if (statusCode == 200) {
@@ -76,13 +75,10 @@ public class ProductCollector {
             } else {
                 log.info("Product collector: request {} response code {}", productRequest, statusCode);
             }
-        } finally {
-            response.close();
         }
 
         return tikiProductResponse;
     }
-
 
     public void collect(ProductRequest productRequest) {
         try {
