@@ -1,4 +1,4 @@
-package com.smartchoice.productprocessor.repository.productdetail;
+package com.smartchoice.productprocessor.repository.productdetail.impl;
 
 import java.util.Objects;
 
@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import com.smartchoice.common.model.Supplier;
 import com.smartchoice.productprocessor.model.ProductDetail;
+import com.smartchoice.productprocessor.repository.productdetail.ProductDetailRepositoryCustom;
 
 @Service
 public class ProductDetailRepositoryImpl implements ProductDetailRepositoryCustom {
@@ -34,7 +35,7 @@ public class ProductDetailRepositoryImpl implements ProductDetailRepositoryCusto
         criteriaQuery.where(criteriaBuilder.and(criteriaBuilder.equal(root.get(ProductDetail.EXTERNAL_ID), externalId),
                 criteriaBuilder.equal(root.get(ProductDetail.SUPPLIER), supplier)));
         Query<ProductDetail> query = session.createQuery(criteriaQuery);
-        return query.getSingleResult();
+        return query.uniqueResult();
     }
 }
 

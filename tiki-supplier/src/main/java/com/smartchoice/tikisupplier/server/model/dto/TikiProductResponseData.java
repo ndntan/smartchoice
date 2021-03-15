@@ -19,7 +19,7 @@ public class TikiProductResponseData {
 
     private Long discount_rate;
 
-    private String thumbnail;
+    private String thumbnail_url;
 
     private String short_description;
 
@@ -28,11 +28,11 @@ public class TikiProductResponseData {
     public TikiProductResponseData() {
     }
 
-    public TikiProductResponseData(Long id, String name, Long price, String thumbnail) {
+    public TikiProductResponseData(Long id, String name, Long price, String thumbnail_url) {
         this.id = id;
         this.name = name;
         this.price = price;
-        this.thumbnail = thumbnail;
+        this.thumbnail_url = thumbnail_url;
     }
 
     public Long getId() {
@@ -59,12 +59,12 @@ public class TikiProductResponseData {
         this.price = price;
     }
 
-    public String getThumbnail() {
-        return thumbnail;
+    public String getThumbnail_url() {
+        return thumbnail_url;
     }
 
-    public void setThumbnail(String thumbnail) {
-        this.thumbnail = thumbnail;
+    public void setThumbnail_url(String thumbnail_url) {
+        this.thumbnail_url = thumbnail_url;
     }
 
     public Long getDiscount() {
@@ -104,13 +104,13 @@ public class TikiProductResponseData {
         productResponse.setPrice(this.price);
         productResponse.setProductName(this.name);
         productResponse.setProductId(this.id);
-        productResponse.setImage(this.thumbnail);
+        productResponse.setImage(this.thumbnail_url);
         productResponse.setDiscount(this.discount);
         productResponse.setDiscountRate(this.discount_rate);
         productResponse.setShortDescription(this.short_description);
         productResponse.setProductPath(productServer + "/" + this.url_path);
         productResponse.setCategoryId(productRequest.getCategoryId());
-        productResponse.setSupplyCategoryId(productRequest.getExternalCategoryId());
+        productResponse.setExternalCategoryId(productRequest.getExternalCategoryId());
         productResponse.setSupplier(Supplier.TIKI);
 
         return productResponse;
@@ -122,7 +122,7 @@ public class TikiProductResponseData {
                 .append("id", id)
                 .append("name", name)
                 .append("price", price)
-                .append("thumbnail", thumbnail)
+                .append("thumbnail", thumbnail_url)
                 .toString();
     }
 

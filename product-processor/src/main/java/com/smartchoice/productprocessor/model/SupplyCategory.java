@@ -24,7 +24,7 @@ import com.smartchoice.common.model.Supplier;
 @Entity
 public class SupplyCategory implements Serializable {
 
-    public static final String NAME = "name";
+    public static final String EXTERNAL_CATEGORY_ID = "externalCategoryId";
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -6,5 +6,5 @@ import org.springframework.stereotype.Repository;
 import com.smartchoice.productprocessor.model.Product;
 
 @Repository
-public interface ProductRepository extends CrudRepository<Product, Integer>, ProductRepositoryCustom {
+public interface ProductRepository extends CrudRepository<Product, Long>, ProductRepositoryCustom {
 }

@@ -1,21 +1,30 @@
 package com.smartchoice.productprocessor.model;
 
-import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
+
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
 import com.smartchoice.common.dto.ProductResponse;
+import com.smartchoice.common.util.VNCharacterUtil;
 
 @Entity
 public class Product implements Serializable {
-
-    public static final String PRODUCT_NAME = "name";
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,6 +32,9 @@ public class Product implements Serializable {
 
     @Column(columnDefinition = "TEXT")
     private String name;
+
+    @Column(columnDefinition = "TEXT")
+    private String searchableName;
 
     @Column(columnDefinition = "TEXT")
     private String icon;
@@ -35,7 +47,18 @@ public class Product implements Serializable {
 
     private LocalDateTime createdTime = LocalDateTime.now(ZoneOffset.UTC);
 
+    @OneToMany(targetEntity = ProductDetail.class, cascade = {
+            CascadeType.ALL }, orphanRemoval = true, mappedBy = "product")
+    private Set<ProductDetail> productDetails = new HashSet<>();
+
     public Product() {
+    }
+
+    public Product(ProductResponse productResponse, Category category) {
+        this.name = productResponse.getProductName();
+        this.icon = productResponse.getImage();
+        this.category = category;
+        this.searchableName = VNCharacterUtil.removeAccent(productResponse.getProductName().toLowerCase()).replaceAll("[^a-zA-Z0-9 ]", "");
     }
 
     public Long getId() {
@@ -86,6 +109,33 @@ public class Product implements Serializable {
         this.createdTime = createdTime;
     }
 
+    public Set<ProductDetail> getProductDetails() {
+        return productDetails;
+    }
+
+    public void setProductDetails(Set<ProductDetail> productDetails) {
+        this.productDetails = productDetails;
+    }
+
+    public void addProductDetail(ProductDetail productDetail) {
+        this.productDetails.add(productDetail);
+    }
+
+    public void addProductDetails(Set<ProductDetail> productDetails) {
+        this.productDetails.clear();
+        if (productDetails != null) {
+            this.productDetails.addAll(productDetails);
+        }
+    }
+
+    public String getSearchableName() {
+        return searchableName;
+    }
+
+    public void setSearchableName(String searchableName) {
+        this.searchableName = searchableName;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -108,6 +158,8 @@ public class Product implements Serializable {
                 .append("category", category)
                 .append("updatedTime", updatedTime)
                 .append("createdTime", createdTime)
+                .append("productDetails", productDetails)
+                .append("searchableName", searchableName)
                 .toString();
     }
 }

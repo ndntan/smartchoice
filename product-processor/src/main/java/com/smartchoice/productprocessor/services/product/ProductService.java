@@ -11,9 +11,11 @@ public interface ProductService {
 
     Product save(Product product);
 
-    void delete(Integer id);
+    void delete(Long id);
 
-    Product findById(Integer id);
+    Product findById(Long id);
 
     void notifySupplier(ProductRequest productRequest);
+
+    Product findWithTrigramsAlgorithm(String searchText, Double threshold);
 }

@@ -29,6 +29,7 @@ import com.smartchoice.common.dto.CategoryResponse;
 import com.smartchoice.common.model.Supplier;
 import com.smartchoice.common.model.gson.SCGson;
 import com.smartchoice.common.model.rabbitmq.QueueName;
+import com.smartchoice.common.util.VNCharacterUtil;
 
 @Component
 public class CategoryCollector {
@@ -74,9 +75,10 @@ public class CategoryCollector {
                             String categoryResponseName = categoryResponse.getName();
                             Long categoryResponseId = categoryResponse.getId();
                             if (StringUtils.isNotEmpty(categoryResponseName) && categoryResponseId != null) {
-                                float score = algorithm.compare(categoryRequest.getCategoryName().toLowerCase(),
-                                        categoryResponse.getName().toLowerCase());
-                                if (score > 0.6) {
+                                String nonAccentCategoryRequestName = VNCharacterUtil.removeAccent(categoryRequest.getCategoryName().toLowerCase()).replaceAll("[^a-zA-Z0-9 ]", "");
+                                String nonAccentCategoryResponseName = VNCharacterUtil.removeAccent(categoryResponse.getName().toLowerCase()).replaceAll("[^a-zA-Z0-9 ]", "");
+                                float score = algorithm.compare(nonAccentCategoryRequestName, nonAccentCategoryResponseName);
+                                if (score > 0.3) {
                                     categoryResponse.setRequestId(categoryRequest.getCategoryId());
                                     categoryResponse.setSupplier(Supplier.TIKI);
                                     amqpTemplate.convertAndSend(QueueName.TIKI_RABBITMQ_QUEUE_NAME_CATEGORY_RESPONSE_MAIN, categoryResponse);

@@ -15,7 +15,6 @@ import com.smartchoice.common.dto.ProductRequest;
 import com.smartchoice.common.model.Supplier;
 import com.smartchoice.productprocessor.model.Product;
 import com.smartchoice.productprocessor.repository.product.ProductRepository;
-import com.smartchoice.productprocessor.services.category.impl.CategoryResponseProcessor;
 import com.smartchoice.productprocessor.services.product.ProductService;
 
 @Service
@@ -43,13 +42,13 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public void delete(Integer id)
+    public void delete(Long id)
     {
        productRepository.deleteById(id);
     }
 
     @Override
-    public Product findById(Integer id) {
+    public Product findById(Long id) {
         return productRepository.findById(id).orElse(null);
     }
 
@@ -64,5 +63,14 @@ public class ProductServiceImpl implements ProductService {
                 log.info("Notified {} product consumer {}", supplier, productRequest);
             }
         }));
+    }
+
+    @Override
+    public Product findWithTrigramsAlgorithm(String searchText, Double threshold) {
+        Long existingId = productRepository.findWithTrigramsAlgorithm(searchText, threshold);
+        if (existingId == null) {
+            return null;
+        }
+        return productRepository.findById(existingId).orElse(null);
     }
 }

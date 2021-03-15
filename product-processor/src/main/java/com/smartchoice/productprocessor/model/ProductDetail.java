@@ -21,6 +21,7 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
+import com.smartchoice.common.dto.ProductResponse;
 import com.smartchoice.common.model.Supplier;
 
 @Entity
@@ -71,6 +72,15 @@ public class ProductDetail implements Serializable {
     private Supplier supplier;
 
     public ProductDetail() {
+    }
+
+    public ProductDetail(SupplyCategory supplyCategory) {
+        this.supplyCategory = supplyCategory;
+    }
+
+    public ProductDetail(Product product, SupplyCategory supplyCategory) {
+        this.product = product;
+        this.supplyCategory = supplyCategory;
     }
 
     public Long getId() {
@@ -189,13 +199,14 @@ public class ProductDetail implements Serializable {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        ProductDetail product = (ProductDetail) o;
-        return id.equals(product.id);
+        ProductDetail that = (ProductDetail) o;
+        return externalId.equals(that.externalId) &&
+                supplier == that.supplier;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id);
+        return Objects.hash(externalId, supplier);
     }
 
     @Override
@@ -216,5 +227,18 @@ public class ProductDetail implements Serializable {
                 .append("externalId", externalId)
                 .append("supplier", supplier)
                 .toString();
+    }
+
+    public void update(ProductResponse productResponse) {
+        this.externalId = productResponse.getProductId();
+        this.updatedTime = LocalDateTime.now(ZoneOffset.UTC);
+        this.price = productResponse.getPrice();
+        this.description = productResponse.getShortDescription();
+        this.discount = productResponse.getDiscount();
+        this.discountRate = productResponse.getDiscountRate();
+        this.icon = productResponse.getImage();
+        this.originalName = productResponse.getProductName();
+        this.productPath = productResponse.getProductPath();
+        this.supplier = productResponse.getSupplier();
     }
 }

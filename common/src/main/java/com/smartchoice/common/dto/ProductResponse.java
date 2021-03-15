@@ -6,7 +6,7 @@ import com.smartchoice.common.model.Supplier;
 
 public class ProductResponse {
 
-    private Long supplyCategoryId;
+    private Long externalCategoryId;
 
     private Long categoryId;
 
@@ -28,12 +28,12 @@ public class ProductResponse {
 
     private String shortDescription;
 
-    public Long getSupplyCategoryId() {
-        return supplyCategoryId;
+    public Long getExternalCategoryId() {
+        return externalCategoryId;
     }
 
-    public void setSupplyCategoryId(Long supplyCategoryId) {
-        this.supplyCategoryId = supplyCategoryId;
+    public void setExternalCategoryId(Long externalCategoryId) {
+        this.externalCategoryId = externalCategoryId;
     }
 
     public Long getCategoryId() {
@@ -119,7 +119,7 @@ public class ProductResponse {
     @Override
     public String toString() {
         return new ToStringBuilder(this)
-                .append("supplyCategoryId", supplyCategoryId)
+                .append("externalCategoryId", externalCategoryId)
                 .append("categoryId", categoryId)
                 .append("supplier", supplier)
                 .append("productId", productId)

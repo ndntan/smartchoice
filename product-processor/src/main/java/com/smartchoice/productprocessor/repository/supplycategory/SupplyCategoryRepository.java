@@ -7,5 +7,5 @@ import com.smartchoice.productprocessor.model.Category;
 import com.smartchoice.productprocessor.model.SupplyCategory;
 
 @Repository
-public interface SupplyCategoryRepository extends CrudRepository<SupplyCategory, Integer> {
+public interface SupplyCategoryRepository extends CrudRepository<SupplyCategory, Long>, SupplyCategoryRepositoryCustom {
 }
