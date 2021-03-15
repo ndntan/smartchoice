@@ -1,0 +1,20 @@
+logging:
+  level:
+    org.springframework.web: INFO
+
+spring:
+  rabbitmq:
+    host: ${RABBITMQ_HOST:localhost}
+    username: ${RABBITMQ_USERNAME:guest}
+    password: ${RABBITMQ_PASSWORD:guest}
+
+webhook:
+  queuenames:
+    mainqueue: ${WEBHOOK_MAIN_QUEUE:webhook.main}
+    responsequeue: ${WEBHOOK_RESPONSE_QUEUE:webhook.response}
+    retryqueue: ${WEBHOOK_RETRY_QUEUE:webhook.retry}
+  maxattempts: ${WEBHOOK_MAX_ATTEMPTS:3}
+  blacklist:
+    duration: ${WEBHOOK_BLACKLIST_DURATION_IN_MINUTE:60}
+server:
+  port: ${SERVER_PORT:9199}

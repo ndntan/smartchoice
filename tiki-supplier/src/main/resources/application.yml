@@ -1,0 +1,24 @@
+logging:
+  level:
+    org.springframework.web: INFO
+
+server:
+  port: ${SERVER_PORT:9199}
+
+spring:
+  rabbitmq:
+    host: ${RABBITMQ_HOST:localhost}
+    username: ${RABBITMQ_USERNAME:guest}
+    password: ${RABBITMQ_PASSWORD:guest}
+
+tiki:
+  api:
+    category:
+      endpoint: ${TIKI_CATEGORY_API_ENDPOINT:https://api-sellercenter.tiki.vn}
+      auth:
+        key: ${TIKI_CATEGORY_API_AUTH_KEY:tiki-api}
+        value: ${TIKI_CATEGORY_API_AUTH_VALUE:7ab3da9f-708e-4639-90e8-76b641264d0d}
+    product:
+      endpoint: ${TIKI_PRODUCT_API_ENDPOINT:https://api.tiki.vn}
+  product:
+    endpoint: ${TIKI_PRODUCT_ENDPOINT:https://tiki.vn}

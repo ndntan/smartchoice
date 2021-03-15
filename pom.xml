@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.smartchoice</groupId>
+    <artifactId>com.smartchoice-parent</artifactId>
+    <packaging>pom</packaging>
+    <version>0.0.1-SNAPSHOT</version>
+    <name>com.smartchoice-parent</name>
+    <description>Smart choice</description>
+
+    <properties>
+        <java.version>1.8</java.version>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <springframework.boot.version>2.2.2.RELEASE</springframework.boot.version>
+        <springframework.version>5.2.2.RELEASE</springframework.version>
+        <springframework.security.version>5.2.1.RELEASE</springframework.security.version>
+        <springframework.messaging.version>2.2.2.RELEASE</springframework.messaging.version>
+        <hibernate.version>5.4.10.Final</hibernate.version>
+        <hibernate.spatial.version>5.4.10.Final</hibernate.spatial.version>
+        <hibernate.validator.version>5.4.3.Final</hibernate.validator.version>
+        <gson.version>2.8.6</gson.version>
+        <log4j.version>2.12.1</log4j.version>
+        <poi.version>4.1.1</poi.version>
+        <slf4j.version>1.6.1</slf4j.version>
+        <sensolus.descriptor>5.2</sensolus.descriptor>
+        <swagger.version>1.5.8</swagger.version>
+        <docker.repo>ndnhuttan/com.smartchoice</docker.repo>
+    </properties>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>junit</groupId>
+                <artifactId>junit</artifactId>
+                <version>4.12</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+    <build>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-maven-plugin</artifactId>
+                    <version>2.1.7.RELEASE</version>
+                    <executions>
+                        <execution>
+                            <goals>
+                                <goal>repackage</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                </plugin>
+
+                <plugin>
+                    <artifactId>maven-compiler-plugin</artifactId>
+                    <version>3.8.1</version>
+                    <configuration>
+                        <source>11</source>
+                        <target>11</target>
+                        <encoding>UTF-8</encoding>
+                        <forceJavacCompilerUse>true</forceJavacCompilerUse>
+                    </configuration>
+                </plugin>
+                <plugin>
+                    <groupId>com.spotify</groupId>
+                    <artifactId>dockerfile-maven-plugin</artifactId>
+                    <version>1.4.0</version>
+                    <dependencies>
+                        <dependency>
+                            <groupId>com.sun.activation</groupId>
+                            <artifactId>javax.activation</artifactId>
+                            <version>1.2.0</version>
+                        </dependency>
+                    </dependencies>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.tomcat.maven</groupId>
+                    <artifactId>tomcat7-maven-plugin</artifactId>
+                    <version>2.2</version>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+    </build>
+
+    <modules>
+        <module>common</module>
+        <module>sendo-supplier</module>
+        <module>tiki-supplier</module>
+        <module>product-processor</module>
+    </modules>
+
+</project>

@@ -1,0 +1,26 @@
+<configuration status="${env:log4j2.status}">
+    <appenders>
+        <Elasticsearch name="elasticsearchAppender">
+			<CustomLog4jJsonLayout/>
+			 
+            <RollingIndexName indexName="sc" pattern="yyyyMMdd" timeZone="Asia/Ho_Chi_Minh"/>
+            <AsyncBatchDelivery>
+                <JestHttp serverUris="${env:log4j2.host}"/>
+            </AsyncBatchDelivery>
+
+        </Elasticsearch>
+
+        <Console name="consoleAppender" target="SYSTEM_OUT">
+            <PatternLayout pattern="[%d{ABSOLUTE}][%-5p][%-25c][%t]%X %m%n"/>
+        </Console>
+    </appenders>
+
+    <loggers>
+        <Logger name="com.sun.jersey.spi.container.servlet.WebComponent" level="fatal"/>
+        <Logger name="org.hibernate.engine.internal.StatisticalLoggingSessionEventListener" level="error"/>
+        <root level="info">
+            <appender-ref ref="consoleAppender"/>
+            <appender-ref ref="${env:log.appender}"/> <!-- Select elasticsearchAppender/console - cloud/localhost -->
+        </root>
+    </loggers>
+</configuration>
