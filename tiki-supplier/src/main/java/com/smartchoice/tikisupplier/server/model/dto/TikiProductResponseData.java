@@ -5,7 +5,6 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import com.smartchoice.common.dto.ProductRequest;
 import com.smartchoice.common.dto.ProductResponse;
 import com.smartchoice.common.model.Supplier;
-import com.smartchoice.common.util.VNCharacterUtil;
 
 public class TikiProductResponseData {
 
@@ -124,13 +123,5 @@ public class TikiProductResponseData {
                 .append("price", price)
                 .append("thumbnail", thumbnail_url)
                 .toString();
-    }
-
-    public static void main(String args[])
-    {
-        String str= "Điện Thoại iPhone XR 64GB - (Hàng) Chính Hãng VN/A\"";
-        String removeAccent = VNCharacterUtil.removeAccent(str);
-        removeAccent = removeAccent.replaceAll("[^a-zA-Z0-9-]", " ");
-        System.out.println(removeAccent);
     }
 }
