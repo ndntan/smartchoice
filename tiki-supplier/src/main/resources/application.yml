@@ -11,7 +11,7 @@ spring:
     username: ${RABBITMQ_USERNAME:guest}
     password: ${RABBITMQ_PASSWORD:guest}
     self-config:
-      max-attempts: 3
+      max-attempts: ${RABBITMQ_MAX_ATTEMPTS:3}
 
 tiki:
   api:

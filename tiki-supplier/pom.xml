@@ -11,7 +11,7 @@
     <artifactId>tiki-supplier</artifactId>
     <name>tiki-supplier</name>
     <packaging>jar</packaging>
-    <description>Smart choice tiki supplier</description>
+    <description>Smartchoice: Tiki supplier</description>
 
     <dependencies>
         <dependency>

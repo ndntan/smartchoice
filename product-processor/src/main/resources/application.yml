@@ -23,7 +23,10 @@ spring:
     username: ${RABBITMQ_USERNAME:guest}
     password: ${RABBITMQ_PASSWORD:guest}
     self-config:
-      max-attempts: 3
+      max-attempts: ${RABBITMQ_MAX_ATTEMPTS:3}
+
+server:
+  port: ${SERVER_PORT:9399}
 
 logging:
   level:
