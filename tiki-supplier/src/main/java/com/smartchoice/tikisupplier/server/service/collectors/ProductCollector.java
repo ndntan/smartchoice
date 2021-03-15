@@ -15,6 +15,7 @@ import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.amqp.AmqpRejectAndDontRequeueException;
 import org.springframework.amqp.core.AmqpTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -23,6 +24,7 @@ import org.springframework.stereotype.Component;
 import com.google.gson.Gson;
 import com.smartchoice.common.dto.ProductRequest;
 import com.smartchoice.common.dto.ProductResponse;
+import com.smartchoice.common.model.Supplier;
 import com.smartchoice.common.model.gson.SCGson;
 import com.smartchoice.common.model.rabbitmq.ExchangeName;
 import com.smartchoice.common.model.rabbitmq.QueueName;
@@ -50,6 +52,9 @@ public class ProductCollector {
 
     @Autowired
     private AmqpTemplate amqpTemplate;
+
+    @Value("${spring.rabbitmq.self-config.max-attempts}")
+    private Long maxAttempts;
 
     private TikiProductResponse executeGet(ProductRequest productRequest, Long page, Long limit) throws IOException, URISyntaxException {
         TikiProductResponse tikiProductResponse = new TikiProductResponse();
@@ -80,12 +85,13 @@ public class ProductCollector {
 
 
     public void collect(ProductRequest productRequest) {
-        log.info("Collecting data for the product request {}", productRequest);
-        List<TikiProductResponseData> tikiProductResponseDataList = new ArrayList<>();
-        Long limit = 100L;
-        Long currentPage = 1L;
-        Long lastPage = 0L;
         try {
+            log.info("Collecting data for the product request {}", productRequest);
+            productRequest.increaseAttempts();
+            List<TikiProductResponseData> tikiProductResponseDataList = new ArrayList<>();
+            Long limit = 100L;
+            Long currentPage = 1L;
+            Long lastPage = 0L;
             do {
                 TikiProductResponse tikiProductResponse = executeGet(productRequest, currentPage, limit);
                 if (tikiProductResponse != null && CollectionUtils.isNotEmpty(tikiProductResponse.getData())) {
@@ -101,10 +107,15 @@ public class ProductCollector {
             } while (currentPage <= lastPage);
 
             publishProducts(tikiProductResponseDataList, productRequest);
-        } catch (URISyntaxException | IOException e) {
-            log.error("Tiki supplier: Failed to contact tiki supplier {}", productRequest, e);
         } catch (Exception e) {
             log.error("Tiki supplier: Unexpected exception {}", productRequest, e);
+            if (productRequest.getConsumerAttempts() < maxAttempts) {
+                log.info("Sending the product request to retry queue {}", productRequest);
+                amqpTemplate.convertAndSend(Supplier.TIKI.getProductRequestRetryExchange(),
+                        Supplier.TIKI.getProductRequestRetryQueue(), productRequest);
+            } else {
+                throw new AmqpRejectAndDontRequeueException("Exceeded maximum attempts, parking the product request. " + productRequest , e);
+            }
         }
     }
 

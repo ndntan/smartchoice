@@ -14,6 +14,8 @@ public class CategoryResponse {
 
     private Long requestId;
 
+    private long consumerAttempts;
+
     public Long getId() {
         return id;
     }
@@ -46,6 +48,18 @@ public class CategoryResponse {
         this.requestId = requestId;
     }
 
+    public long getConsumerAttempts() {
+        return consumerAttempts;
+    }
+
+    public void setConsumerAttempts(long consumerAttempts) {
+        this.consumerAttempts = consumerAttempts;
+    }
+
+    public void increaseAttempts() {
+        this.consumerAttempts++;
+    }
+
     @Override
     public String toString() {
         return new ToStringBuilder(this)
@@ -53,6 +67,7 @@ public class CategoryResponse {
                 .append("name", name)
                 .append("supplier", supplier)
                 .append("requestId", requestId)
+                .append("consumerAttempts", consumerAttempts)
                 .toString();
     }
 }

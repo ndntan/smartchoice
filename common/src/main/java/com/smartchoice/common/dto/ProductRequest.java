@@ -10,6 +10,8 @@ public class ProductRequest {
 
     private String productPrimaryKeySearch;
 
+    private long consumerAttempts;
+
     public ProductRequest(Long externalCategoryId, Long categoryId, String productPrimaryKeySearch) {
         this.externalCategoryId = externalCategoryId;
         this.categoryId = categoryId;
@@ -40,12 +42,25 @@ public class ProductRequest {
         this.productPrimaryKeySearch = productPrimaryKeySearch;
     }
 
+    public long getConsumerAttempts() {
+        return consumerAttempts;
+    }
+
+    public void setConsumerAttempts(long consumerAttempts) {
+        this.consumerAttempts = consumerAttempts;
+    }
+
+    public void increaseAttempts() {
+        this.consumerAttempts++;
+    }
+
     @Override
     public String toString() {
         return new ToStringBuilder(this)
                 .append("externalCategoryId", externalCategoryId)
                 .append("categoryId", categoryId)
                 .append("productPrimaryKeySearch", productPrimaryKeySearch)
+                .append("consumerAttempts", consumerAttempts)
                 .toString();
     }
 }

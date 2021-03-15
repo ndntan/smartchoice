@@ -28,6 +28,8 @@ public class ProductResponse {
 
     private String shortDescription;
 
+    private long consumerAttempts;
+
     public Long getExternalCategoryId() {
         return externalCategoryId;
     }
@@ -116,6 +118,18 @@ public class ProductResponse {
         this.shortDescription = shortDescription;
     }
 
+    public long getConsumerAttempts() {
+        return consumerAttempts;
+    }
+
+    public void setConsumerAttempts(long consumerAttempts) {
+        this.consumerAttempts = consumerAttempts;
+    }
+
+    public void increaseAttempts() {
+        this.consumerAttempts++;
+    }
+
     @Override
     public String toString() {
         return new ToStringBuilder(this)
@@ -130,6 +144,7 @@ public class ProductResponse {
                 .append("discount", discount)
                 .append("discount_rate", discountRate)
                 .append("short_description", shortDescription)
+                .append("consumerAttempts", consumerAttempts)
                 .toString();
     }
 }

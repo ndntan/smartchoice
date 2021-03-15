@@ -58,8 +58,8 @@ public class ProductServiceImpl implements ProductService {
         List<Supplier> suppliers = Arrays.asList(Supplier.values());
         suppliers.forEach((supplier -> {
             if (supplier.isExternal()) {
-                amqpTemplate.convertAndSend(supplier.getProductRequestExchange(),
-                        supplier.getProductRequestQueue(), productRequest);
+                amqpTemplate.convertAndSend(supplier.getProductRequestMainExchange(),
+                        supplier.getProductRequestMainQueue(), productRequest);
                 log.info("Notified {} product consumer {}", supplier, productRequest);
             }
         }));

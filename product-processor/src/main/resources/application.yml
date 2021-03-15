@@ -22,6 +22,8 @@ spring:
     host: ${RABBITMQ_HOST:localhost}
     username: ${RABBITMQ_USERNAME:guest}
     password: ${RABBITMQ_PASSWORD:guest}
+    self-config:
+      max-attempts: 3
 
 logging:
   level:

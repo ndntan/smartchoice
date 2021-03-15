@@ -18,6 +18,7 @@ import org.apache.http.util.EntityUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.simmetrics.metrics.Levenshtein;
+import org.springframework.amqp.AmqpRejectAndDontRequeueException;
 import org.springframework.amqp.core.AmqpTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -54,12 +55,15 @@ public class CategoryCollector {
     @Autowired
     private AmqpTemplate amqpTemplate;
 
+    @Value("${spring.rabbitmq.self-config.max-attempts}")
+    private Long maxAttempts;
+
     public void collect(CategoryRequest categoryRequest) {
-        log.info("Collecting data for the category request {}", categoryRequest);
         try {
+            log.info("Collecting data for the category request {}", categoryRequest);
+            categoryRequest.increaseAttempts();
             // construct the request
             URIBuilder builder = new URIBuilder(tikiApiEndpoint + "/integration/categories");
-
             HttpGet httpGet = new HttpGet(builder.build());
             httpGet.setHeader(tikiApiAuthKey, tikiApiAuthValue);
             CloseableHttpResponse response = client.execute(httpGet);
@@ -92,10 +96,15 @@ public class CategoryCollector {
             } finally {
                 response.close();
             }
-        } catch (URISyntaxException | IOException e) {
-            log.error("Tiki supplier: Failed to contact tiki supplier {}", categoryRequest, e);
         } catch (Exception e) {
             log.error("Tiki supplier: Unexpected exception {}", categoryRequest, e);
+            if (categoryRequest.getConsumerAttempts() < maxAttempts) {
+                log.info("Sending the category request to retry queue {}", categoryRequest);
+                amqpTemplate.convertAndSend(Supplier.TIKI.getCategoryRequestRetryExchange(),
+                        Supplier.TIKI.getCategoryRequestRetryQueue(), categoryRequest);
+            } else {
+                throw new AmqpRejectAndDontRequeueException("Exceeded maximum attempts, parking the category request. " + categoryRequest , e);
+            }
         }
     }
 }

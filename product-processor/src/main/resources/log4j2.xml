@@ -3,7 +3,7 @@
         <Elasticsearch name="elasticsearchAppender">
 			<CustomLog4jJsonLayout/>
 			 
-            <RollingIndexName indexName="sc-tiki-supplier" pattern="yyyyMMdd" timeZone="Asia/Ho_Chi_Minh"/>
+            <RollingIndexName indexName="sc-product-processor" pattern="yyyyMMdd" timeZone="Asia/Ho_Chi_Minh"/>
             <AsyncBatchDelivery>
                 <JestHttp serverUris="${env:log4j2.host}"/>
             </AsyncBatchDelivery>

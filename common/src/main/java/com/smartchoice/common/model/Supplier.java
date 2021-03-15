@@ -7,50 +7,122 @@ public enum Supplier {
     TIKI(true, QueueName.TIKI_RABBITMQ_QUEUE_NAME_CATEGORY_REQUEST_MAIN,
             ExchangeName.TIKI_RABBITMQ_DIRECT_EXCHANGE_NAME_CATEGORY_REQUEST_MAIN,
             QueueName.TIKI_RABBITMQ_QUEUE_NAME_PRODUCT_REQUEST_MAIN,
-            ExchangeName.TIKI_RABBITMQ_DIRECT_EXCHANGE_NAME_PRODUCT_REQUEST_MAIN),
+            ExchangeName.TIKI_RABBITMQ_DIRECT_EXCHANGE_NAME_PRODUCT_REQUEST_MAIN,
+            QueueName.TIKI_RABBITMQ_QUEUE_NAME_CATEGORY_RESPONSE_RETRY,
+            ExchangeName.TIKI_RABBITMQ_DIRECT_EXCHANGE_NAME_CATEGORY_RESPONSE_RETRY,
+            QueueName.TIKI_RABBITMQ_QUEUE_NAME_PRODUCT_RESPONSE_RETRY,
+            ExchangeName.TIKI_RABBITMQ_DIRECT_EXCHANGE_NAME_PRODUCT_RESPONSE_RETRY,
+            QueueName.TIKI_RABBITMQ_QUEUE_NAME_CATEGORY_REQUEST_RETRY,
+            ExchangeName.TIKI_RABBITMQ_DIRECT_EXCHANGE_NAME_CATEGORY_REQUEST_RETRY,
+            QueueName.TIKI_RABBITMQ_QUEUE_NAME_PRODUCT_REQUEST_RETRY,
+            ExchangeName.TIKI_RABBITMQ_DIRECT_EXCHANGE_NAME_PRODUCT_REQUEST_RETRY),
     SENDO(true, QueueName.SENDO_RABBITMQ_QUEUE_NAME_CATEGORY_REQUEST_MAIN,
             ExchangeName.SENDO_RABBITMQ_DIRECT_EXCHANGE_NAME_CATEGORY_REQUEST_MAIN,
             QueueName.SENDO_RABBITMQ_QUEUE_NAME_PRODUCT_REQUEST_MAIN,
-            ExchangeName.SENDO_RABBITMQ_DIRECT_EXCHANGE_NAME_PRODUCT_REQUEST_MAIN),
+            ExchangeName.SENDO_RABBITMQ_DIRECT_EXCHANGE_NAME_PRODUCT_REQUEST_MAIN,
+            QueueName.SENDO_RABBITMQ_QUEUE_NAME_CATEGORY_RESPONSE_RETRY,
+            ExchangeName.SENDO_RABBITMQ_DIRECT_EXCHANGE_NAME_CATEGORY_RESPONSE_RETRY,
+            QueueName.SENDO_RABBITMQ_QUEUE_NAME_PRODUCT_RESPONSE_RETRY,
+            ExchangeName.SENDO_RABBITMQ_DIRECT_EXCHANGE_NAME_PRODUCT_RESPONSE_RETRY,
+            QueueName.SENDO_RABBITMQ_QUEUE_NAME_CATEGORY_REQUEST_RETRY,
+            ExchangeName.SENDO_RABBITMQ_DIRECT_EXCHANGE_NAME_CATEGORY_REQUEST_RETRY,
+            QueueName.SENDO_RABBITMQ_QUEUE_NAME_PRODUCT_REQUEST_RETRY,
+            ExchangeName.SENDO_RABBITMQ_DIRECT_EXCHANGE_NAME_PRODUCT_REQUEST_RETRY),
     SELF(false);
 
     private boolean isExternal;
 
-    private String categoryRequestQueue;
-    private String categoryRequestExchange;
+    private String categoryRequestMainQueue;
+    private String categoryRequestMainExchange;
 
-    private String productRequestQueue;
-    private String productRequestExchange;
+    private String productRequestMainQueue;
+    private String productRequestMainExchange;
+
+    private String categoryResponseRetryQueue;
+    private String categoryResponseRetryExchange;
+
+    private String productResponseRetryQueue;
+    private String productResponseRetryExchange;
+
+    private String categoryRequestRetryQueue;
+    private String categoryRequestRetryExchange;
+
+    private String productRequestRetryQueue;
+    private String productRequestRetryExchange;
 
     Supplier(boolean isExternal) {
         this.isExternal = isExternal;
     }
 
-    Supplier(boolean isExternal, String categoryRequestQueue, String categoryRequestExchange, String productRequestQueue, String productRequestExchange) {
+    Supplier(boolean isExternal, String categoryRequestMainQueue, String categoryRequestMainExchange,
+             String productRequestMainQueue, String productRequestMainExchange, String categoryResponseRetryQueue,
+             String categoryResponseRetryExchange, String productResponseRetryQueue, String productResponseRetryExchange,
+             String categoryRequestRetryQueue, String categoryRequestRetryExchange, String productRequestRetryQueue,
+             String productRequestRetryExchange) {
         this.isExternal = isExternal;
-        this.categoryRequestQueue = categoryRequestQueue;
-        this.categoryRequestExchange = categoryRequestExchange;
-        this.productRequestQueue = productRequestQueue;
-        this.productRequestExchange = productRequestExchange;
+        this.categoryRequestMainQueue = categoryRequestMainQueue;
+        this.categoryRequestMainExchange = categoryRequestMainExchange;
+        this.productRequestMainQueue = productRequestMainQueue;
+        this.productRequestMainExchange = productRequestMainExchange;
+        this.categoryResponseRetryQueue = categoryResponseRetryQueue;
+        this.categoryResponseRetryExchange = categoryResponseRetryExchange;
+        this.productResponseRetryQueue = productResponseRetryQueue;
+        this.productResponseRetryExchange = productResponseRetryExchange;
+        this.categoryRequestRetryQueue = categoryRequestRetryQueue;
+        this.categoryRequestRetryExchange = categoryRequestRetryExchange;
+        this.productRequestRetryQueue = productRequestRetryQueue;
+        this.productRequestRetryExchange = productRequestRetryExchange;
     }
 
     public boolean isExternal() {
         return isExternal;
     }
 
-    public String getCategoryRequestQueue() {
-        return categoryRequestQueue;
+    public String getCategoryRequestMainQueue() {
+        return categoryRequestMainQueue;
     }
 
-    public String getCategoryRequestExchange() {
-        return categoryRequestExchange;
+    public String getCategoryRequestMainExchange() {
+        return categoryRequestMainExchange;
     }
 
-    public String getProductRequestQueue() {
-        return productRequestQueue;
+    public String getProductRequestMainQueue() {
+        return productRequestMainQueue;
     }
 
-    public String getProductRequestExchange() {
-        return productRequestExchange;
+    public String getProductRequestMainExchange() {
+        return productRequestMainExchange;
+    }
+
+    public String getCategoryResponseRetryQueue() {
+        return categoryResponseRetryQueue;
+    }
+
+    public String getCategoryResponseRetryExchange() {
+        return categoryResponseRetryExchange;
+    }
+
+    public String getProductResponseRetryQueue() {
+        return productResponseRetryQueue;
+    }
+
+    public String getProductResponseRetryExchange() {
+        return productResponseRetryExchange;
+    }
+
+    public String getCategoryRequestRetryQueue() {
+        return categoryRequestRetryQueue;
+    }
+
+    public String getCategoryRequestRetryExchange() {
+        return categoryRequestRetryExchange;
+    }
+
+    public String getProductRequestRetryQueue() {
+        return productRequestRetryQueue;
+    }
+
+    public String getProductRequestRetryExchange() {
+        return productRequestRetryExchange;
     }
 }

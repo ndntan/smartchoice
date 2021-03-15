@@ -9,6 +9,8 @@ public class CategoryRequest {
 
     private String categoryName;
 
+    private long consumerAttempts;
+
     public CategoryRequest(Long categoryId, String categoryName) {
         this.categoryId = categoryId;
         this.categoryName = categoryName;
@@ -30,11 +32,24 @@ public class CategoryRequest {
         this.categoryName = categoryName;
     }
 
+    public long getConsumerAttempts() {
+        return consumerAttempts;
+    }
+
+    public void setConsumerAttempts(long consumerAttempts) {
+        this.consumerAttempts = consumerAttempts;
+    }
+
+    public void increaseAttempts() {
+        this.consumerAttempts++;
+    }
+
     @Override
     public String toString() {
         return new ToStringBuilder(this)
                 .append("categoryId", categoryId)
                 .append("categoryName", categoryName)
+                .append("consumerAttempts", consumerAttempts)
                 .toString();
     }
 }

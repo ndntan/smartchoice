@@ -12,8 +12,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.smartchoice.common.model.Supplier;
-import com.smartchoice.common.model.rabbitmq.ExchangeName;
-import com.smartchoice.common.model.rabbitmq.QueueName;
 import com.smartchoice.productprocessor.dto.CategoryInfo;
 import com.smartchoice.productprocessor.model.Category;
 import com.smartchoice.productprocessor.repository.category.CategoryRepository;
@@ -90,8 +88,8 @@ public class CategoryServiceImpl implements CategoryService {
                 List<Supplier> suppliers = Arrays.asList(Supplier.values());
                 suppliers.forEach((supplier -> {
                     if (supplier.isExternal()) {
-                        amqpTemplate.convertAndSend(supplier.getCategoryRequestExchange(),
-                                supplier.getCategoryRequestQueue(), categoryDTO.toCategoryRequest());
+                        amqpTemplate.convertAndSend(supplier.getCategoryRequestMainExchange(),
+                                supplier.getCategoryRequestMainQueue(), categoryDTO.toCategoryRequest());
                     }
                 }));
             }));

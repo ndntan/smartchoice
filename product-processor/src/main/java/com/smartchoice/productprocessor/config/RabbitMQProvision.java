@@ -26,7 +26,11 @@ public class RabbitMQProvision {
 	@Bean
 	Queue TIKI_RABBITMQ_QUEUE_NAME_CATEGORY_REQUEST_MAIN() {
 		log.info("Creating queue TIKI_RABBITMQ_QUEUE_NAME_CATEGORY_REQUEST_MAIN");
-		return new Queue(QueueName.TIKI_RABBITMQ_QUEUE_NAME_CATEGORY_REQUEST_MAIN, true);
+		return QueueBuilder.durable(QueueName.TIKI_RABBITMQ_QUEUE_NAME_CATEGORY_REQUEST_MAIN)
+				.deadLetterExchange(ExchangeName.TIKI_RABBITMQ_DIRECT_EXCHANGE_NAME_CATEGORY_REQUEST_PARKING)
+				.deadLetterRoutingKey(QueueName.TIKI_RABBITMQ_QUEUE_NAME_CATEGORY_REQUEST_PARKING)
+				.ttl(TTL)
+				.build();
 	}
 
 	@Bean
@@ -48,7 +52,11 @@ public class RabbitMQProvision {
 	@Bean
 	Queue TIKI_RABBITMQ_QUEUE_NAME_CATEGORY_RESPONSE_MAIN() {
 		log.info("Creating queue TIKI_RABBITMQ_QUEUE_NAME_CATEGORY_RESPONSE_MAIN");
-		return new Queue(QueueName.TIKI_RABBITMQ_QUEUE_NAME_CATEGORY_RESPONSE_MAIN, true);
+		return QueueBuilder.durable(QueueName.TIKI_RABBITMQ_QUEUE_NAME_CATEGORY_RESPONSE_MAIN)
+				.deadLetterExchange(ExchangeName.TIKI_RABBITMQ_DIRECT_EXCHANGE_NAME_CATEGORY_RESPONSE_PARKING)
+				.deadLetterRoutingKey(QueueName.TIKI_RABBITMQ_QUEUE_NAME_CATEGORY_RESPONSE_PARKING)
+				.ttl(TTL)
+				.build();
 	}
 
 	@Bean
@@ -70,14 +78,18 @@ public class RabbitMQProvision {
 	@Bean
 	Queue TIKI_RABBITMQ_QUEUE_NAME_PRODUCT_REQUEST_MAIN() {
 		log.info("Creating queue TIKI_RABBITMQ_QUEUE_NAME_PRODUCT_REQUEST_MAIN");
-		return new Queue(QueueName.TIKI_RABBITMQ_QUEUE_NAME_PRODUCT_REQUEST_MAIN, true);
+		return QueueBuilder.durable(QueueName.TIKI_RABBITMQ_QUEUE_NAME_PRODUCT_REQUEST_MAIN)
+				.deadLetterExchange(ExchangeName.TIKI_RABBITMQ_DIRECT_EXCHANGE_NAME_PRODUCT_REQUEST_PARKING)
+				.deadLetterRoutingKey(QueueName.TIKI_RABBITMQ_QUEUE_NAME_PRODUCT_REQUEST_PARKING)
+				.ttl(TTL)
+				.build();
 	}
 
 	@Bean
 	Queue TIKI_RABBITMQ_QUEUE_NAME_PRODUCT_REQUEST_RETRY() {
 		log.info("Creating queue TIKI_RABBITMQ_QUEUE_NAME_PRODUCT_REQUEST_RETRY");
 		return QueueBuilder.durable(QueueName.TIKI_RABBITMQ_QUEUE_NAME_PRODUCT_REQUEST_RETRY)
-				.deadLetterExchange(ExchangeName.TIKI_RABBITMQ_DIRECT_EXCHANGE_NAME_PRODUCT_RESPONSE_MAIN)
+				.deadLetterExchange(ExchangeName.TIKI_RABBITMQ_DIRECT_EXCHANGE_NAME_PRODUCT_REQUEST_MAIN)
 				.deadLetterRoutingKey(QueueName.TIKI_RABBITMQ_QUEUE_NAME_PRODUCT_REQUEST_MAIN)
 				.ttl(TTL)
 				.build();
@@ -92,7 +104,11 @@ public class RabbitMQProvision {
 	@Bean
 	Queue TIKI_RABBITMQ_QUEUE_NAME_PRODUCT_RESPONSE_MAIN() {
 		log.info("Creating queue TIKI_RABBITMQ_QUEUE_NAME_PRODUCT_RESPONSE_MAIN");
-		return new Queue(QueueName.TIKI_RABBITMQ_QUEUE_NAME_PRODUCT_RESPONSE_MAIN, true);
+		return QueueBuilder.durable(QueueName.TIKI_RABBITMQ_QUEUE_NAME_PRODUCT_RESPONSE_MAIN)
+				.deadLetterExchange(ExchangeName.TIKI_RABBITMQ_DIRECT_EXCHANGE_NAME_PRODUCT_RESPONSE_PARKING)
+				.deadLetterRoutingKey(QueueName.TIKI_RABBITMQ_QUEUE_NAME_PRODUCT_RESPONSE_PARKING)
+				.ttl(TTL)
+				.build();
 	}
 
 	@Bean
@@ -273,7 +289,11 @@ public class RabbitMQProvision {
 	@Bean
 	Queue SENDO_RABBITMQ_QUEUE_NAME_CATEGORY_REQUEST_MAIN() {
 		log.info("Creating queue SENDO_RABBITMQ_QUEUE_NAME_CATEGORY_REQUEST_MAIN");
-		return new Queue(QueueName.SENDO_RABBITMQ_QUEUE_NAME_CATEGORY_REQUEST_MAIN, true);
+		return QueueBuilder.durable(QueueName.SENDO_RABBITMQ_QUEUE_NAME_CATEGORY_REQUEST_MAIN)
+				.deadLetterExchange(ExchangeName.SENDO_RABBITMQ_DIRECT_EXCHANGE_NAME_PRODUCT_REQUEST_PARKING)
+				.deadLetterRoutingKey(QueueName.SENDO_RABBITMQ_QUEUE_NAME_CATEGORY_REQUEST_PARKING)
+				.ttl(TTL)
+				.build();
 	}
 
 	@Bean
@@ -295,7 +315,11 @@ public class RabbitMQProvision {
 	@Bean
 	Queue SENDO_RABBITMQ_QUEUE_NAME_CATEGORY_RESPONSE_MAIN() {
 		log.info("Creating queue SENDO_RABBITMQ_QUEUE_NAME_CATEGORY_RESPONSE_MAIN");
-		return new Queue(QueueName.SENDO_RABBITMQ_QUEUE_NAME_CATEGORY_RESPONSE_MAIN, true);
+		return QueueBuilder.durable(QueueName.SENDO_RABBITMQ_QUEUE_NAME_CATEGORY_RESPONSE_MAIN)
+				.deadLetterExchange(ExchangeName.SENDO_RABBITMQ_DIRECT_EXCHANGE_NAME_CATEGORY_RESPONSE_PARKING)
+				.deadLetterRoutingKey(QueueName.SENDO_RABBITMQ_QUEUE_NAME_CATEGORY_RESPONSE_PARKING)
+				.ttl(TTL)
+				.build();
 	}
 
 	@Bean
@@ -317,7 +341,11 @@ public class RabbitMQProvision {
 	@Bean
 	Queue SENDO_RABBITMQ_QUEUE_NAME_PRODUCT_REQUEST_MAIN() {
 		log.info("Creating queue SENDO_RABBITMQ_QUEUE_NAME_PRODUCT_REQUEST_MAIN");
-		return new Queue(QueueName.SENDO_RABBITMQ_QUEUE_NAME_PRODUCT_REQUEST_MAIN, true);
+		return QueueBuilder.durable(QueueName.SENDO_RABBITMQ_QUEUE_NAME_PRODUCT_REQUEST_MAIN)
+				.deadLetterExchange(ExchangeName.SENDO_RABBITMQ_DIRECT_EXCHANGE_NAME_PRODUCT_REQUEST_PARKING)
+				.deadLetterRoutingKey(QueueName.SENDO_RABBITMQ_QUEUE_NAME_PRODUCT_REQUEST_PARKING)
+				.ttl(TTL)
+				.build();
 	}
 
 	@Bean
@@ -339,7 +367,11 @@ public class RabbitMQProvision {
 	@Bean
 	Queue SENDO_RABBITMQ_QUEUE_NAME_PRODUCT_RESPONSE_MAIN() {
 		log.info("Creating queue SENDO_RABBITMQ_QUEUE_NAME_PRODUCT_RESPONSE_MAIN");
-		return new Queue(QueueName.SENDO_RABBITMQ_QUEUE_NAME_PRODUCT_RESPONSE_MAIN, true);
+		return QueueBuilder.durable(QueueName.SENDO_RABBITMQ_QUEUE_NAME_PRODUCT_RESPONSE_MAIN)
+				.deadLetterExchange(ExchangeName.SENDO_RABBITMQ_DIRECT_EXCHANGE_NAME_PRODUCT_RESPONSE_PARKING)
+				.deadLetterRoutingKey(QueueName.SENDO_RABBITMQ_QUEUE_NAME_PRODUCT_RESPONSE_PARKING)
+				.ttl(TTL)
+				.build();
 	}
 
 	@Bean
