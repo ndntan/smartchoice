@@ -93,11 +93,17 @@ public class ProductCollector {
                 if (tikiProductResponse != null && CollectionUtils.isNotEmpty(tikiProductResponse.getData())) {
                     tikiProductResponseDataList.addAll(tikiProductResponse.getData());
                 }
-                TikiProductReponsePaging paging = tikiProductResponse.getPaging();
-                if (paging != null) {
-                    lastPage = paging.getLast_page();
-                    currentPage++;
+                if (tikiProductResponse != null) {
+                    TikiProductReponsePaging paging = tikiProductResponse.getPaging();
+                    if (paging != null) {
+                        lastPage = paging.getLast_page();
+                        currentPage++;
+                    } else {
+                        log.warn("Tiki supplier: paging is empty {}", productRequest);
+                        break;
+                    }
                 } else {
+                    log.warn("Tiki supplier: response is empty {}", productRequest);
                     break;
                 }
             } while (currentPage <= lastPage);
