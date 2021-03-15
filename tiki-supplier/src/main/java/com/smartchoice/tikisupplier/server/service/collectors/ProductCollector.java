@@ -124,8 +124,8 @@ public class ProductCollector {
     private void publishProducts(List<TikiProductResponseData> tikiProductResponseDataList, ProductRequest productRequest) {
         tikiProductResponseDataList.forEach(tikiProductResponseData -> {
             ProductResponse productResponse = tikiProductResponseData.toProductResponse(productRequest, tikiProductEndpoint);
-            amqpTemplate.convertAndSend(ExchangeName.TIKI_RABBITMQ_DIRECT_EXCHANGE_NAME_PRODUCT_RESPONSE_MAIN,
-                    QueueName.TIKI_RABBITMQ_QUEUE_NAME_PRODUCT_RESPONSE_MAIN, productResponse);
+            amqpTemplate.convertAndSend(ExchangeName.SC_RABBITMQ_DIRECT_EXCHANGE_NAME_PRODUCT_RESPONSE_MAIN,
+                    QueueName.SC_RABBITMQ_QUEUE_NAME_PRODUCT_RESPONSE_MAIN, productResponse);
         });
     }
 }

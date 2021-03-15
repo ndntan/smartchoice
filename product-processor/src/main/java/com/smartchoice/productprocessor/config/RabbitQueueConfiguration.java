@@ -36,9 +36,9 @@ public class RabbitQueueConfiguration {
 			MessageListenerAdapter categoryResponseListenerAdapter) {
 		SimpleMessageListenerContainer container = new SimpleMessageListenerContainer();
 		container.setConnectionFactory(connectionFactory);
-		container.setQueueNames(QueueName.TIKI_RABBITMQ_QUEUE_NAME_CATEGORY_RESPONSE_MAIN);
+		container.setQueueNames(QueueName.SC_RABBITMQ_QUEUE_NAME_CATEGORY_RESPONSE_MAIN);
 		container.setMessageListener(categoryResponseListenerAdapter);
-		log.info("Listening on {}", QueueName.TIKI_RABBITMQ_QUEUE_NAME_CATEGORY_RESPONSE_MAIN);
+		log.info("Listening on {}", QueueName.SC_RABBITMQ_QUEUE_NAME_CATEGORY_RESPONSE_MAIN);
 		return container;
 	}
 
@@ -54,9 +54,9 @@ public class RabbitQueueConfiguration {
 															 MessageListenerAdapter productResponseListenerAdapter) {
 		SimpleMessageListenerContainer container = new SimpleMessageListenerContainer();
 		container.setConnectionFactory(connectionFactory);
-		container.setQueueNames(QueueName.TIKI_RABBITMQ_QUEUE_NAME_PRODUCT_RESPONSE_MAIN);
+		container.setQueueNames(QueueName.SC_RABBITMQ_QUEUE_NAME_PRODUCT_RESPONSE_MAIN);
 		container.setMessageListener(productResponseListenerAdapter);
-		log.info("Listening on {}", QueueName.TIKI_RABBITMQ_QUEUE_NAME_PRODUCT_RESPONSE_MAIN);
+		log.info("Listening on {}", QueueName.SC_RABBITMQ_QUEUE_NAME_PRODUCT_RESPONSE_MAIN);
 		return container;
 	}
 }

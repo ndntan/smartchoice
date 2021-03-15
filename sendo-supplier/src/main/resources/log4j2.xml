@@ -3,7 +3,7 @@
         <Elasticsearch name="elasticsearchAppender">
 			<CustomLog4jJsonLayout/>
 			 
-            <RollingIndexName indexName="sc" pattern="yyyyMMdd" timeZone="Asia/Ho_Chi_Minh"/>
+            <RollingIndexName indexName="sc-sendo-supplier" pattern="yyyyMMdd" timeZone="Asia/Ho_Chi_Minh"/>
             <AsyncBatchDelivery>
                 <JestHttp serverUris="${env:log4j2.host}"/>
             </AsyncBatchDelivery>

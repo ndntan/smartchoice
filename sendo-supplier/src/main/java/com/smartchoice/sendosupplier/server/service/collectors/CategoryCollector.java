@@ -1,9 +1,10 @@
-package com.smartchoice.tikisupplier.server.service.collectors;
+package com.smartchoice.sendosupplier.server.service.collectors;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
+
+import javax.ws.rs.core.HttpHeaders;
+import javax.ws.rs.core.MediaType;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -32,13 +33,29 @@ import com.smartchoice.common.dto.CategoryRequest;
 import com.smartchoice.common.dto.CategoryResponse;
 import com.smartchoice.common.model.Supplier;
 import com.smartchoice.common.model.gson.SCGson;
+import com.smartchoice.common.model.rabbitmq.ExchangeName;
 import com.smartchoice.common.model.rabbitmq.QueueName;
 import com.smartchoice.common.util.VNCharacterUtil;
+import com.smartchoice.sendosupplier.server.dto.SendoCategoryResponse;
+import com.smartchoice.sendosupplier.server.service.TokenProvider;
 
 @Component
 public class CategoryCollector {
 
     private static final Logger log = LogManager.getLogger(CategoryCollector.class);
+
+    @Value("${sendo.api.endpoint}")
+    private String sendoApiEndpoint;
+
+    @Autowired
+    private AmqpTemplate amqpTemplate;
+
+    @Autowired
+    private TokenProvider tokenProvider;
+
+    @Value("${spring.rabbitmq.self-config.max-attempts}")
+    private Long maxAttempts;
+
     private CloseableHttpClient client = HttpClients.custom().setMaxConnPerRoute(10).setMaxConnTotal(10)
             .setDefaultRequestConfig(RequestConfig.custom().setConnectTimeout(5 * 1000)
                     .setConnectionRequestTimeout(5 * 1000).setSocketTimeout(5 * 1000).build())
@@ -46,35 +63,22 @@ public class CategoryCollector {
 
     private Gson gson = SCGson.getGson();
 
-    @Value("${tiki.api.category.endpoint}")
-    private String tikiApiEndpoint;
-
-    @Value("${tiki.api.category.auth.key}")
-    private String tikiApiAuthKey;
-
-    @Value("${tiki.api.category.auth.value}")
-    private String tikiApiAuthValue;
-
-    @Autowired
-    private AmqpTemplate amqpTemplate;
-
-    @Value("${spring.rabbitmq.self-config.max-attempts}")
-    private Long maxAttempts;
-
     public void collect(CategoryRequest categoryRequest) {
         try {
             log.info("Collecting data for the category request {}", categoryRequest);
             categoryRequest.increaseAttempts();
             // construct the request
-            URIBuilder builder = new URIBuilder(tikiApiEndpoint + "/integration/categories");
+            URIBuilder builder = new URIBuilder(sendoApiEndpoint + "/api/partner/category/0");
             HttpGet httpGet = new HttpGet(builder.build());
-            httpGet.setHeader(tikiApiAuthKey, tikiApiAuthValue);
+            httpGet.setHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON);
+            httpGet.setHeader(HttpHeaders.AUTHORIZATION, "bearer " + tokenProvider.obtainSendoToken());
             try (CloseableHttpResponse response = client.execute(httpGet)) {
                 String responseBody = EntityUtils.toString(response.getEntity());
                 int statusCode = response.getStatusLine().getStatusCode();
                 if (statusCode == 200) {
                     log.info("Category collector: request {} response {}", categoryRequest, responseBody);
-                    List<CategoryResponse> categories = new ArrayList<>(Arrays.asList(gson.fromJson(responseBody, CategoryResponse[].class)));
+                    SendoCategoryResponse sendoCategoryResponse = gson.fromJson(responseBody, SendoCategoryResponse.class);
+                    List<CategoryResponse> categories = sendoCategoryResponse.getResult();
                     if (CollectionUtils.isNotEmpty(categories)) {
                         StringMetric metric =
                                 StringMetricBuilder.with(new CosineSimilarity<>())
@@ -91,8 +95,9 @@ public class CategoryCollector {
                                 float score = metric.compare(nonAccentCategoryRequestName, nonAccentCategoryResponseName);
                                 if (score > 0.6) {
                                     categoryResponse.setRequestId(categoryRequest.getCategoryId());
-                                    categoryResponse.setSupplier(Supplier.TIKI);
-                                    amqpTemplate.convertAndSend(QueueName.SC_RABBITMQ_QUEUE_NAME_CATEGORY_RESPONSE_MAIN, categoryResponse);
+                                    categoryResponse.setSupplier(Supplier.SENDO);
+                                    amqpTemplate.convertAndSend(ExchangeName.SC_RABBITMQ_DIRECT_EXCHANGE_NAME_CATEGORY_RESPONSE_MAIN,
+                                            QueueName.SC_RABBITMQ_QUEUE_NAME_CATEGORY_RESPONSE_MAIN, categoryResponse);
                                 }
                             }
                         }
@@ -102,13 +107,13 @@ public class CategoryCollector {
                 }
             }
         } catch (Exception e) {
-            log.error("Tiki supplier: Unexpected exception {}", categoryRequest, e);
+            log.error("Sendo supplier: Unexpected exception {}", categoryRequest, e);
             if (categoryRequest.getConsumerAttempts() < maxAttempts) {
                 log.info("Sending the category request to retry queue {}", categoryRequest);
-                amqpTemplate.convertAndSend(Supplier.TIKI.getCategoryRequestRetryExchange(),
-                        Supplier.TIKI.getCategoryRequestRetryQueue(), categoryRequest);
+                amqpTemplate.convertAndSend(Supplier.SENDO.getCategoryRequestRetryExchange(),
+                        Supplier.SENDO.getCategoryRequestRetryQueue(), categoryRequest);
             } else {
-                throw new AmqpRejectAndDontRequeueException("Exceeded maximum attempts, parking the category request. " + categoryRequest , e);
+                throw new AmqpRejectAndDontRequeueException("Exceeded maximum attempts, parking the category request. " + categoryRequest, e);
             }
         }
     }

@@ -1,4 +1,4 @@
-package com.smartchoice.lazadasupplier;
+package com.smartchoice.sendosupplier;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -9,11 +9,11 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 
 @SpringBootApplication
 @EnableScheduling
-public class LazadaSupplierApplication {
-    private static Logger logger = LogManager.getLogger(LazadaSupplierApplication.class);
+public class SendoSupplierApplication {
+    private static Logger logger = LogManager.getLogger(SendoSupplierApplication.class);
 
     public static void main(String[] args) {
-        logger.info("Starting Lazada supplier service...");
-        new SpringApplicationBuilder(LazadaSupplierApplication.class).web(WebApplicationType.NONE).run(args);
+        logger.info("Starting Sendo supplier service...");
+        new SpringApplicationBuilder(SendoSupplierApplication.class).web(WebApplicationType.NONE).run(args);
     }
 }

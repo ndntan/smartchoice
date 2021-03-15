@@ -8,10 +8,6 @@ public enum Supplier {
             ExchangeName.TIKI_RABBITMQ_DIRECT_EXCHANGE_NAME_CATEGORY_REQUEST_MAIN,
             QueueName.TIKI_RABBITMQ_QUEUE_NAME_PRODUCT_REQUEST_MAIN,
             ExchangeName.TIKI_RABBITMQ_DIRECT_EXCHANGE_NAME_PRODUCT_REQUEST_MAIN,
-            QueueName.TIKI_RABBITMQ_QUEUE_NAME_CATEGORY_RESPONSE_RETRY,
-            ExchangeName.TIKI_RABBITMQ_DIRECT_EXCHANGE_NAME_CATEGORY_RESPONSE_RETRY,
-            QueueName.TIKI_RABBITMQ_QUEUE_NAME_PRODUCT_RESPONSE_RETRY,
-            ExchangeName.TIKI_RABBITMQ_DIRECT_EXCHANGE_NAME_PRODUCT_RESPONSE_RETRY,
             QueueName.TIKI_RABBITMQ_QUEUE_NAME_CATEGORY_REQUEST_RETRY,
             ExchangeName.TIKI_RABBITMQ_DIRECT_EXCHANGE_NAME_CATEGORY_REQUEST_RETRY,
             QueueName.TIKI_RABBITMQ_QUEUE_NAME_PRODUCT_REQUEST_RETRY,
@@ -20,10 +16,6 @@ public enum Supplier {
             ExchangeName.SENDO_RABBITMQ_DIRECT_EXCHANGE_NAME_CATEGORY_REQUEST_MAIN,
             QueueName.SENDO_RABBITMQ_QUEUE_NAME_PRODUCT_REQUEST_MAIN,
             ExchangeName.SENDO_RABBITMQ_DIRECT_EXCHANGE_NAME_PRODUCT_REQUEST_MAIN,
-            QueueName.SENDO_RABBITMQ_QUEUE_NAME_CATEGORY_RESPONSE_RETRY,
-            ExchangeName.SENDO_RABBITMQ_DIRECT_EXCHANGE_NAME_CATEGORY_RESPONSE_RETRY,
-            QueueName.SENDO_RABBITMQ_QUEUE_NAME_PRODUCT_RESPONSE_RETRY,
-            ExchangeName.SENDO_RABBITMQ_DIRECT_EXCHANGE_NAME_PRODUCT_RESPONSE_RETRY,
             QueueName.SENDO_RABBITMQ_QUEUE_NAME_CATEGORY_REQUEST_RETRY,
             ExchangeName.SENDO_RABBITMQ_DIRECT_EXCHANGE_NAME_CATEGORY_REQUEST_RETRY,
             QueueName.SENDO_RABBITMQ_QUEUE_NAME_PRODUCT_REQUEST_RETRY,
@@ -38,12 +30,6 @@ public enum Supplier {
     private String productRequestMainQueue;
     private String productRequestMainExchange;
 
-    private String categoryResponseRetryQueue;
-    private String categoryResponseRetryExchange;
-
-    private String productResponseRetryQueue;
-    private String productResponseRetryExchange;
-
     private String categoryRequestRetryQueue;
     private String categoryRequestRetryExchange;
 
@@ -55,8 +41,7 @@ public enum Supplier {
     }
 
     Supplier(boolean isExternal, String categoryRequestMainQueue, String categoryRequestMainExchange,
-             String productRequestMainQueue, String productRequestMainExchange, String categoryResponseRetryQueue,
-             String categoryResponseRetryExchange, String productResponseRetryQueue, String productResponseRetryExchange,
+             String productRequestMainQueue, String productRequestMainExchange,
              String categoryRequestRetryQueue, String categoryRequestRetryExchange, String productRequestRetryQueue,
              String productRequestRetryExchange) {
         this.isExternal = isExternal;
@@ -64,10 +49,6 @@ public enum Supplier {
         this.categoryRequestMainExchange = categoryRequestMainExchange;
         this.productRequestMainQueue = productRequestMainQueue;
         this.productRequestMainExchange = productRequestMainExchange;
-        this.categoryResponseRetryQueue = categoryResponseRetryQueue;
-        this.categoryResponseRetryExchange = categoryResponseRetryExchange;
-        this.productResponseRetryQueue = productResponseRetryQueue;
-        this.productResponseRetryExchange = productResponseRetryExchange;
         this.categoryRequestRetryQueue = categoryRequestRetryQueue;
         this.categoryRequestRetryExchange = categoryRequestRetryExchange;
         this.productRequestRetryQueue = productRequestRetryQueue;
@@ -92,22 +73,6 @@ public enum Supplier {
 
     public String getProductRequestMainExchange() {
         return productRequestMainExchange;
-    }
-
-    public String getCategoryResponseRetryQueue() {
-        return categoryResponseRetryQueue;
-    }
-
-    public String getCategoryResponseRetryExchange() {
-        return categoryResponseRetryExchange;
-    }
-
-    public String getProductResponseRetryQueue() {
-        return productResponseRetryQueue;
-    }
-
-    public String getProductResponseRetryExchange() {
-        return productResponseRetryExchange;
     }
 
     public String getCategoryRequestRetryQueue() {

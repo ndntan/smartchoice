@@ -15,7 +15,8 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.smartchoice.common.dto.ProductResponse;
-import com.smartchoice.common.model.Supplier;
+import com.smartchoice.common.model.rabbitmq.ExchangeName;
+import com.smartchoice.common.model.rabbitmq.QueueName;
 import com.smartchoice.productprocessor.model.Category;
 import com.smartchoice.productprocessor.model.Product;
 import com.smartchoice.productprocessor.model.ProductDetail;
@@ -100,9 +101,8 @@ public class ProductResponseProcessor {
             log.error("Exception occurs when processing the product response {}", productResponse, e);
             if (productResponse.getConsumerAttempts() < maxAttempts) {
                 log.info("Sending the product response to retry queue {}", productResponse);
-                Supplier supplier = productResponse.getSupplier();
-                amqpTemplate.convertAndSend(supplier.getProductResponseRetryExchange(),
-                        supplier.getProductResponseRetryQueue(), productResponse);
+                amqpTemplate.convertAndSend(ExchangeName.SC_RABBITMQ_DIRECT_EXCHANGE_NAME_PRODUCT_RESPONSE_RETRY,
+                        QueueName.SC_RABBITMQ_QUEUE_NAME_PRODUCT_RESPONSE_RETRY, productResponse);
             } else {
                 throw new AmqpRejectAndDontRequeueException("Exceeded maximum attempts, parking the product response. " + productResponse , e);
             }
