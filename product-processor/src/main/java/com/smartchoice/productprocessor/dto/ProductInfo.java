@@ -10,9 +10,7 @@ public class ProductInfo {
 
     public ProductInfo(Product product) {
         this.name = product.getName();
-        this.description = product.getDescription();
         this.icon = product.getIcon();
-        this.price = product.getPrice();
     }
 
     public String getName() {
@@ -50,9 +48,7 @@ public class ProductInfo {
     public Product toProduct() {
         Product product = new Product();
         product.setName(this.name);
-        product.setDescription(this.description);
         product.setIcon(this.icon);
-        product.setPrice(this.price);
 
         return product;
     }

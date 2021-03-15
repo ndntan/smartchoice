@@ -38,12 +38,6 @@ public class ProductController {
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 
-    @GetMapping(path= "/{productName}/getByName",produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Object> getByName(@PathVariable String productName){
-      Product product  = productService.findByName(productName);
-        return ResponseEntity.status(HttpStatus.OK).body(product);
-    }
-
     @PostMapping(path = "/", produces = MediaType.APPLICATION_JSON_VALUE,consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Object> create(@RequestBody ProductInfo productInfo) {
        Product product = productInfo.toProduct();
