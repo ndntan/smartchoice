@@ -91,7 +91,7 @@ public class ProductCollector {
             List<TikiProductResponseData> tikiProductResponseDataList = new ArrayList<>();
             Long limit = 100L;
             Long currentPage = 1L;
-            Long lastPage = 0L;
+            Long lastPage;
             do {
                 TikiProductResponse tikiProductResponse = executeGet(productRequest, currentPage, limit);
                 if (tikiProductResponse != null && CollectionUtils.isNotEmpty(tikiProductResponse.getData())) {
