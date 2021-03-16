@@ -37,6 +37,7 @@ public class ProductDetail implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Suppress
     @Column(columnDefinition = "TEXT")
     private String originalName;
 

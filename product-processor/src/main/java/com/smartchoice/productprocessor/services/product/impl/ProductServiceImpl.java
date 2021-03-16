@@ -34,8 +34,7 @@ public class ProductServiceImpl implements ProductService {
     private AmqpTemplate amqpTemplate;
 
     @Override
-    public List<Product> findAll()
-    {
+    public List<Product> findAll() {
         return (List<Product>) productRepository.findAll();
     }
 
