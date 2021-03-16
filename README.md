@@ -277,6 +277,21 @@ curl -X POST \
 	}
 ]'
 ```
+
+##### Output
+```text
+[
+    {
+        "id": 1,
+        "name": "dien thoai iphone",
+        "createdTime": "2021-03-16T11:49:47+0000",
+        "updatedTime": "2021-03-16T11:49:47+0000",
+        "productPrimaryKeySearch": [
+            "Iphone"
+        ]
+    }
+]
+```
 When you got status code 200 of the above request. Let see how the Smartchoice works and enjoys!
 
 
@@ -287,7 +302,9 @@ curl -X GET \
   -H 'cache-control: no-cache' \
   -H 'postman-token: b4e3493f-ba4b-fa34-6b71-8973e16b85e0'
 ```
-#### Output
+
+##### Output
+
 ```text
 [
     {
