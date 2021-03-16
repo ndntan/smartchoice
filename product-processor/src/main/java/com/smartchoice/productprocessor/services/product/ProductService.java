@@ -18,4 +18,8 @@ public interface ProductService {
     void notifySupplier(ProductRequest productRequest);
 
     Product findWithTrigramsAlgorithm(String searchText, Double threshold);
+
+    List<Long> findManyWithTrigramsAlgorithm(String fullSearchText, Double threshold);
+
+    List<Product> search(String text);
 }

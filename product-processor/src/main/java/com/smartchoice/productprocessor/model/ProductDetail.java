@@ -21,6 +21,7 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
+import com.smartchoice.common.annotation.Suppress;
 import com.smartchoice.common.dto.ProductResponse;
 import com.smartchoice.common.model.Supplier;
 
@@ -49,10 +50,12 @@ public class ProductDetail implements Serializable {
 
     private Long price;
 
+    @Suppress
     @ManyToOne(cascade= CascadeType.ALL)
     @OnDelete(action = OnDeleteAction.CASCADE)
     private SupplyCategory supplyCategory;
 
+    @Suppress
     @ManyToOne(cascade= CascadeType.ALL)
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Product product;
@@ -64,6 +67,7 @@ public class ProductDetail implements Serializable {
     @Column(columnDefinition = "TEXT")
     private String productPath;
 
+    @Suppress
     private LocalDateTime updatedTime;
 
     private LocalDateTime createdTime = LocalDateTime.now(ZoneOffset.UTC);

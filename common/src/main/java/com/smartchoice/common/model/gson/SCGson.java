@@ -38,6 +38,11 @@ public class SCGson {
 		ISO_8601,
 
 		/**
+		 * TimeUtil.CF.ISO_8601_NO_MILLI <br>
+		 */
+		ISO_8601_NO_MILLI,
+
+		/**
 		 * serializeNulls <br>
 		 */
 		SERIALIZE_NULLS,
@@ -86,6 +91,12 @@ public class SCGson {
 			builder.registerTypeAdapter(LocalDateTime.class,
 					new GsonLocalDateTimeSerializer(TimeUtil.CF.ISO_8601.getPrinter())).registerTypeAdapter(
 							LocalDateTime.class, new GsonZdtToLdtUTCDeserializer(TimeUtil.CF.ISO_8601.getParser()));
+			break;
+		case ISO_8601_NO_MILLI:
+			builder.registerTypeAdapter(LocalDateTime.class,
+					new GsonZdtToLdtUTCDeserializer(TimeUtil.CF.ISO_8601_NO_MILLI.getParser()))
+					.registerTypeAdapter(LocalDateTime.class,
+							new GsonLocalDateTimeSerializer(TimeUtil.CF.ISO_8601_NO_MILLI.getPrinter()));
 			break;
 		case SERIALIZE_NULLS:
 			builder.serializeNulls();

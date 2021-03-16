@@ -1,9 +1,12 @@
 package com.smartchoice.productprocessor.services.product.impl;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.amqp.core.AmqpTemplate;
@@ -14,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.smartchoice.common.dto.ProductRequest;
 import com.smartchoice.common.model.Supplier;
 import com.smartchoice.productprocessor.model.Product;
+import com.smartchoice.productprocessor.model.ProductDetail;
 import com.smartchoice.productprocessor.repository.product.ProductRepository;
 import com.smartchoice.productprocessor.services.product.ProductService;
 
@@ -72,5 +76,27 @@ public class ProductServiceImpl implements ProductService {
             return null;
         }
         return productRepository.findById(existingId).orElse(null);
+    }
+
+    @Override
+    public List<Long> findManyWithTrigramsAlgorithm(String fullSearchText, Double threshold) {
+        return productRepository.findManyWithTrigramsAlgorithm(fullSearchText, threshold);
+    }
+
+    @Override
+    public List<Product> search(String text) {
+        List<Product> result = new ArrayList<>();
+        List<Long> foundIds = productRepository.findManyWithTrigramsAlgorithm(text, 0.1);
+        if (CollectionUtils.isNotEmpty(foundIds)) {
+            Iterable<Product> existingProducts = productRepository.findAllById(foundIds);
+            existingProducts.forEach((product) -> {
+                Set<ProductDetail> productDetails = product.getProductDetails();
+                if (CollectionUtils.isNotEmpty(productDetails) && productDetails.size() > 1) {
+                    result.add(product);
+                }
+            });
+        }
+
+        return result;
     }
 }

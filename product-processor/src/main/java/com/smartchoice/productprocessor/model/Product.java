@@ -20,6 +20,7 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
+import com.smartchoice.common.annotation.Suppress;
 import com.smartchoice.common.dto.ProductResponse;
 import com.smartchoice.common.util.VNCharacterUtil;
 
@@ -33,6 +34,7 @@ public class Product implements Serializable {
     @Column(columnDefinition = "TEXT")
     private String name;
 
+    @Suppress
     @Column(columnDefinition = "TEXT")
     private String searchableName;
 
@@ -43,6 +45,7 @@ public class Product implements Serializable {
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Category category;
 
+    @Suppress
     private LocalDateTime updatedTime;
 
     private LocalDateTime createdTime = LocalDateTime.now(ZoneOffset.UTC);

@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.amqp.core.AmqpTemplate;
@@ -80,6 +82,23 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public Category findById(Long id) {
         return categoryRepository.findById(id).orElse(null);
+    }
+
+    @Override
+    public void refresh(Long id) {
+        if (id != null) {
+            Category category = categoryRepository.findById(id).orElse(null);
+            if (category == null) {
+                throw new IllegalArgumentException("Not found category id " + id);
+            }
+
+            notifySupplier(Collections.singletonList(new CategoryInfo(category)));
+        } else {
+            List<CategoryInfo> categoryInfos = findAll();
+            if (CollectionUtils.isNotEmpty(categoryInfos)) {
+                notifySupplier(categoryInfos);
+            }
+        }
     }
 
     private void notifySupplier(List<CategoryInfo> categoryInfos) {

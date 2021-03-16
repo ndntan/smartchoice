@@ -17,6 +17,7 @@ import javax.persistence.Id;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.hibernate.annotations.Type;
 
+import com.smartchoice.common.annotation.Suppress;
 import com.smartchoice.common.model.Supplier;
 import com.smartchoice.common.model.db.ListOfStringsUserType;
 
@@ -34,8 +35,10 @@ public class Category implements Serializable {
 
     private LocalDateTime createdTime = LocalDateTime.now(ZoneOffset.UTC);
 
+    @Suppress
     private LocalDateTime updatedTime;
 
+    @Suppress
     @Type(type = ListOfStringsUserType.TYPE)
     @Column(nullable = false)
     private List<String> productPrimaryKeySearch;
