@@ -110,6 +110,26 @@ This service will fetch the data from the Sendo platform when receiving a reques
 
 ![Smartchoice architect](https://user-images.githubusercontent.com/80661119/111290800-18319700-8679-11eb-96c9-e0bcb5880291.png)
 
+### RabbitMQ: Message integrity
+
+Sometimes it is necessary to execute certain operations decoupled from the rest of your business logic. We needed to send an update to an external system (e.g. an audit log). The update itself is not necessary for the operation of our own user flows. The user should not be aware of failures. This is why we decided to build it using messaging.
+
+The idea is that we can build a retry mechanism by combining the DLQ and TTL feature. But how could this be achieved?
+
+Have a look at the following sketch:
+
+![reliable-rabbit_queues](https://user-images.githubusercontent.com/80661119/111313585-1d9bdb00-8693-11eb-9a09-20a70ac65d47.png)
+
+What do we see here?
+
+#### WorkerQueue:
+* The queue which contains our internal event to trigger the update to the external system. Our Application is bound to it and consumes all messages. It has a DLQ configuration to pass rejected messages to the WaitQueue.
+
+#### WaitQueue:
+* Most of the magic lives here: It has no active listener bound, but a TTL of 1 minute and a DLQ configuration. With this in place, it will forward all messages which it receives after 1 minute to the defined DLQ. We use this to put our messages back into the WorkerQueue after 1 minute.
+
+#### ParkingLot:
+* When an update didn’t make it after all Retries got executed - we put it in the parkingLot so that we can have a manual look why the messages were not able to get processed. The application could also contain a logic to publish here directly to get rid of poison messages.
 
 	
 ## Prerequisites
