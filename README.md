@@ -112,9 +112,7 @@ This service will fetch the data from the Sendo platform when receiving a reques
 
 
 	
-## Usage
-
-### Prerequisites to run this eco-services
+## Prerequisites
 
 #### Packages are required
 * JDK 11
