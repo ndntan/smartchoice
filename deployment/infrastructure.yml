@@ -1,0 +1,168 @@
+version: '3'
+services:
+  rabbitmq:
+    image: rabbitmq:3.8-management
+    ports:
+      - "5672:5672"
+    deploy:
+      mode: replicated
+      replicas: 1
+      placement:
+        constraints: [node.role == manager]
+      labels:
+        com.df.notify: "true"
+        com.df.servicePath: "/rabbitmq/"
+        com.df.port: "15672"
+        com.df.reqPathSearchReplace: "/rabbitmq/,/"
+    networks:
+      - proxy
+      - default
+    environment:
+      RABBITMQ_DEFAULT_USER: "guest"
+      RABBITMQ_DEFAULT_PASS: "guest"
+  postgresql-db:
+    image: mdillon/postgis:11
+    environment:
+      POSTGRES_USER: tan
+      POSTGRES_PASSWORD: tandb
+      POSTGRES_DB: smartchoice
+    ports:
+      - "5432:5432"
+    deploy:
+      mode: replicated
+      replicas: 1
+      placement:
+        constraints: [node.role == manager]
+    networks:
+      - default
+    logging:
+      driver: "json-file"
+      options:
+        max-file: "5"
+        max-size: "10m"
+  proxy:
+    image: dockerflow/docker-flow-proxy
+    ports:
+      - "80:80"
+    networks:
+      - proxy
+    environment:
+      LISTENER_ADDRESS: swarm-listener
+      MODE: swarm
+    deploy:
+      mode: replicated
+      replicas: 1
+    logging:
+      driver: "json-file"
+      options:
+        max-file: "5"
+        max-size: "10m"
+  swarm-listener:
+    image: dockerflow/docker-flow-swarm-listener
+    networks:
+      - proxy
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    environment:
+      DF_NOTIFY_CREATE_SERVICE_URL: http://proxy:8080/v1/docker-flow-proxy/reconfigure
+      DF_NOTIFY_REMOVE_SERVICE_URL: http://proxy:8080/v1/docker-flow-proxy/remove
+    deploy:
+      mode: replicated
+      placement:
+        constraints: [node.role == manager]
+      replicas: 1
+    logging:
+      driver: "json-file"
+      options:
+        max-file: "5"
+        max-size: "10m"
+    depends_on:
+      - proxy
+  product-processor:
+    image: "ndnhuttan/smartchoice:product-processor-0.0.1-SNAPSHOT"
+    deploy:
+      mode: replicated
+      placement:
+        constraints: [node.role == manager]
+      replicas: 1
+      labels:
+        com.df.notify: "true"
+        com.df.servicePath: "/rest"
+        com.df.port: "9399"
+    networks:
+      - proxy
+      - default
+    logging:
+      driver: "json-file"
+      options:
+        max-file: "5"
+        max-size: "10m"
+    depends_on:
+      - rabbitmq
+      - postgresql-db
+    environment:
+      RABBITMQ_HOST: rabbitmq
+      SERVER_PORT: 9399
+      RABBITMQ_USERNAME: "guest"
+      RABBITMQ_PASSWORD: "guest"
+      RABBITMQ_MAX_ATTEMPTS: 3
+      POSTGRES_DB_ENDPOINT: "jdbc:postgresql://postgresql-db:5432/smartchoice"
+      POSTGRES_DB_ENDPOINT_USER: tan
+      POSTGRES_DB_ENDPOINT_PASS: tandb
+  sendo-supplier:
+    image: "ndnhuttan/smartchoice:sendo-supplier-0.0.1-SNAPSHOT"
+    deploy:
+      mode: replicated
+      placement:
+        constraints: [node.role == manager]
+      replicas: 1
+    logging:
+      driver: "json-file"
+      options:
+        max-file: "5"
+        max-size: "10m"
+    depends_on:
+      - rabbitmq
+      - postgresql-db
+      - product-processor
+    environment:
+      RABBITMQ_HOST: rabbitmq
+      SERVER_PORT: 9199
+      RABBITMQ_USERNAME: "guest"
+      RABBITMQ_PASSWORD: "guest"
+      RABBITMQ_MAX_ATTEMPTS: 3
+      SENDO_API_ENDPOINT: https://open.sendo.vn
+      SENDO_API_AUTH_SHOP_KEY: a1c6d642d64f4f7aaed0e46aa76eae88
+      SENDO_AUTH_SECRET_KEY: 653939d94b41471683f8a5387fe483e8
+  tiki-supplier:
+    image: "ndnhuttan/smartchoice:tiki-supplier-0.0.1-SNAPSHOT"
+    deploy:
+      mode: replicated
+      placement:
+        constraints: [node.role == manager]
+      replicas: 1
+    logging:
+      driver: "json-file"
+      options:
+        max-file: "5"
+        max-size: "10m"
+    depends_on:
+      - rabbitmq
+      - postgresql-db
+      - product-processor
+    environment:
+      RABBITMQ_HOST: rabbitmq
+      SERVER_PORT: 9299
+      RABBITMQ_USERNAME: "guest"
+      RABBITMQ_PASSWORD: "guest"
+      RABBITMQ_MAX_ATTEMPTS: 3
+      TIKI_CATEGORY_API_ENDPOINT: https://api-sellercenter.tiki.vn
+      TIKI_CATEGORY_API_AUTH_KEY: tiki-api
+      SENDO_AUTH_SECRETIKI_CATEGORY_API_AUTH_VALUET_KEY: 7ab3da9f-708e-4639-90e8-76b641264d0d
+      TIKI_PRODUCT_API_ENDPOINT: https://api.tiki.vn
+      TIKI_PRODUCT_ENDPOINT: https://tiki.vn
+networks:
+  proxy:
+    driver: overlay
+  default:
+    external: false
