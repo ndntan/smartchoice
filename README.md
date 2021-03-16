@@ -287,3 +287,76 @@ curl -X GET \
   -H 'cache-control: no-cache' \
   -H 'postman-token: b4e3493f-ba4b-fa34-6b71-8973e16b85e0'
 ```
+#### Output
+```text
+[
+    {
+        "id": 1,
+        "name": "?i?n tho?i iphone 11 64GB - Hàng Chí Hãng",
+        "icon": "https://media3.scdn.vn/img4/2021/03_16/WzgiazKxykJzqNCxANYd.jpg",
+        "category": {
+            "id": 1,
+            "name": "dien thoai iphone",
+            "createdTime": "2021-03-16T11:49:47+0000"
+        },
+        "createdTime": "2021-03-16T11:49:49+0000",
+        "productDetails": [
+            {
+                "id": 1,
+                "externalId": 41525235,
+                "icon": "https://media3.scdn.vn/img4/2021/03_16/WzgiazKxykJzqNCxANYd.jpg",
+                "price": 19990000,
+                "productPath": "https://www.sendo.vn/dien-thoai-iphone-11-64gb-hang-chi-hang-41525235.html",
+                "createdTime": "2021-03-16T11:49:49+0000",
+                "supplier": "SENDO"
+            },
+            {
+                "id": 4,
+                "externalId": 32033717,
+                "description": "\nThi?t k? ??m ch?t phá cách nh?ng c?ng không kém sang tr?ng\n?i?n Tho?i iPhone 11 là s?n ph?m k? nhi?m cho chi?c iPhone Xr t?ng dành ???c s? chú ý c?a gi?i công ngh?. L?n này, Apple v?n ?i theo nh?ng...",
+                "icon": "https://salt.tikicdn.com/cache/280x280/ts/product/0c/62/39/31879ad1c9cf92b35e58749268ba4ff7.jpg",
+                "price": 16490000,
+                "discount": 6500000,
+                "discountRate": 28,
+                "productPath": "https://tiki.vn/dien-thoai-iphone-11-64gb-hang-chinh-hang-p32033717.html?src=ss-organic",
+                "createdTime": "2021-03-16T11:49:49+0000",
+                "supplier": "TIKI"
+            }
+        ]
+    },
+    {
+        "id": 2,
+        "name": "?i?n Tho?i iPhone 12 Mini - Hàng Chính Hãng",
+        "icon": "https://media3.scdn.vn/img4/2021/03_09/asI33wkkkl6rxo4XqOv4.jpg",
+        "category": {
+            "id": 1,
+            "name": "dien thoai iphone",
+            "createdTime": "2021-03-16T11:49:47+0000"
+        },
+        "createdTime": "2021-03-16T11:49:49+0000",
+        "productDetails": [
+            {
+                "id": 2,
+                "externalId": 41364220,
+                "icon": "https://media3.scdn.vn/img4/2021/03_09/asI33wkkkl6rxo4XqOv4.jpg",
+                "price": 21990000,
+                "productPath": "https://www.sendo.vn/dien-thoai-iphone-12-mini-hang-chinh-hang-41364220.html",
+                "createdTime": "2021-03-16T11:49:49+0000",
+                "supplier": "SENDO"
+            },
+            {
+                "id": 7,
+                "externalId": 71201117,
+                "description": "Vi?n máy vát ph?ng cùng màn hình tai th? 5.4 inch\n?i?n tho?i iPhone 12 Mini là m?t trong nh?ng phiên b?n ?i?n tho?i siêu ph?m c?a Apple, ? dòng máy này vi?n máy không còn ???c thi?t k? bo cong các...",
+                "icon": "https://salt.tikicdn.com/cache/280x280/ts/product/ea/2b/1a/aa25f64b1f028fc8d3b1fde44c5a3dd0.jpg",
+                "price": 17690000,
+                "discount": 4300000,
+                "discountRate": 20,
+                "productPath": "https://tiki.vn/dien-thoai-iphone-12-mini-64gb-hang-chinh-hang-p71201117.html?src=ss-organic",
+                "createdTime": "2021-03-16T11:49:50+0000",
+                "supplier": "TIKI"
+            }
+        ]
+    }
+]
+```
