@@ -107,7 +107,10 @@ This service will fetch the data from the Sendo platform when receiving a reques
 ![category](https://user-images.githubusercontent.com/80661119/111285159-6ba0e680-8673-11eb-88d1-ba1e78c6144b.png)
 
 ### Architecture
-<TBC>
+
+![Smartchoice architect vpd](https://user-images.githubusercontent.com/80661119/111289885-2df28c80-8678-11eb-93e0-58d004fe36af.png)
+
+
 	
 ## Usage
 
