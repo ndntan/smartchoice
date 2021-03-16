@@ -88,6 +88,8 @@ Imagine the situation: the customer chooses a credit card and, of course, wants 
 
 The pros and cons are about the same as in the case of manually adding data: the model is easy to implement but inconvenient in subsequent use.
 
+### In this project we will use API solution to fetch products from the well-known suppliers
+
 
 ## Product processor service 0.0.1-SNAPSHOT
 This is the main application where the user can search the products and also it handles almost the data from some suppliers
