@@ -2,19 +2,20 @@ logging:
   level:
     org.springframework.web: INFO
 
+server:
+  port: ${SERVER_PORT:9199}
+
 spring:
   rabbitmq:
     host: ${RABBITMQ_HOST:localhost}
     username: ${RABBITMQ_USERNAME:guest}
     password: ${RABBITMQ_PASSWORD:guest}
+    self-config:
+      max-attempts: ${RABBITMQ_MAX_ATTEMPTS:3}
 
-webhook:
-  queuenames:
-    mainqueue: ${WEBHOOK_MAIN_QUEUE:webhook.main}
-    responsequeue: ${WEBHOOK_RESPONSE_QUEUE:webhook.response}
-    retryqueue: ${WEBHOOK_RETRY_QUEUE:webhook.retry}
-  maxattempts: ${WEBHOOK_MAX_ATTEMPTS:3}
-  blacklist:
-    duration: ${WEBHOOK_BLACKLIST_DURATION_IN_MINUTE:60}
-server:
-  port: ${SERVER_PORT:9199}
+sendo:
+  api:
+    endpoint: ${SENDO_API_ENDPOINT:https://open.sendo.vn}
+    auth:
+      shop_key: ${SENDO_API_AUTH_SHOP_KEY:a1c6d642d64f4f7aaed0e46aa76eae88}
+      secret_key: ${SENDO_AUTH_SECRET_KEY:653939d94b41471683f8a5387fe483e8}

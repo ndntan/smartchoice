@@ -89,7 +89,7 @@ public class CategoryCollector {
                                 String nonAccentCategoryRequestName = VNCharacterUtil.removeAccent(categoryRequest.getCategoryName());
                                 String nonAccentCategoryResponseName = VNCharacterUtil.removeAccent(categoryResponse.getName());
                                 float score = metric.compare(nonAccentCategoryRequestName, nonAccentCategoryResponseName);
-                                if (score > 0.6) {
+                                if (score > 0.5) {
                                     categoryResponse.setRequestId(categoryRequest.getCategoryId());
                                     categoryResponse.setSupplier(Supplier.TIKI);
                                     amqpTemplate.convertAndSend(QueueName.SC_RABBITMQ_QUEUE_NAME_CATEGORY_RESPONSE_MAIN, categoryResponse);

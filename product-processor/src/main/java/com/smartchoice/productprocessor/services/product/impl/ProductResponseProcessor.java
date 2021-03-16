@@ -15,8 +15,10 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.smartchoice.common.dto.ProductResponse;
+import com.smartchoice.common.model.Supplier;
 import com.smartchoice.common.model.rabbitmq.ExchangeName;
 import com.smartchoice.common.model.rabbitmq.QueueName;
+import com.smartchoice.common.util.VNCharacterUtil;
 import com.smartchoice.productprocessor.model.Category;
 import com.smartchoice.productprocessor.model.Product;
 import com.smartchoice.productprocessor.model.ProductDetail;
@@ -59,12 +61,13 @@ public class ProductResponseProcessor {
                 log.info("Found a product (product id {} supplier {}) so updating the stats to latest {}", productResponse.getProductId(), productResponse.getSupplier(), existingProductDetail);
                 existingProductDetail.update(productResponse);
             } else {
-                log.info("Not found the product (product id {} supplier {} product name {}). Using trigrams to search the most similar product", productResponse.getProductId(), productResponse.getSupplier(), productResponse.getProductName());
-                Product existingProduct = productService.findWithTrigramsAlgorithm(productResponse.getProductName(), 0.8);
+                log.info("Not found the product (product id {} supplier {} product name {}). Using trigrams to search the most similar product",
+                        productResponse.getProductId(), productResponse.getSupplier(), productResponse.getProductName());
+                Product existingProduct = productService.findWithTrigramsAlgorithm(VNCharacterUtil.generateSearchableText(productResponse.getProductName()), 0.8);
                 if (existingProduct != null) {
                     log.info("Trigram found the product (product id {} supplier {} product name {}). Detail {}", productResponse.getProductId(), productResponse.getSupplier(), productResponse.getProductName(), existingProduct);
                     Set<ProductDetail> existingProductDetails = existingProduct.getProductDetails();
-                    if (CollectionUtils.isNotEmpty(existingProductDetails)) {
+                    if (CollectionUtils.isNotEmpty(existingProductDetails) && !containProductDetailOfSupplier(existingProductDetails, productResponse.getSupplier())) {
                         log.info("Searching supply category {}", productResponse.getExternalCategoryId());
                         SupplyCategory existingSupplyCategory = supplyCategoryService.findByExternalId(productResponse.getExternalCategoryId());
                         if (existingSupplyCategory != null) {
@@ -104,8 +107,20 @@ public class ProductResponseProcessor {
                 amqpTemplate.convertAndSend(ExchangeName.SC_RABBITMQ_DIRECT_EXCHANGE_NAME_PRODUCT_RESPONSE_RETRY,
                         QueueName.SC_RABBITMQ_QUEUE_NAME_PRODUCT_RESPONSE_RETRY, productResponse);
             } else {
-                throw new AmqpRejectAndDontRequeueException("Exceeded maximum attempts, parking the product response. " + productResponse , e);
+                throw new AmqpRejectAndDontRequeueException("Exceeded maximum attempts, parking the product response. " + productResponse, e);
             }
         }
+    }
+
+    private boolean containProductDetailOfSupplier(Set<ProductDetail> productDetails, Supplier supplier) {
+        if (CollectionUtils.isNotEmpty(productDetails)) {
+            for (ProductDetail productDetail : productDetails) {
+                if (supplier.equals(productDetail.getSupplier())) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
     }
 }

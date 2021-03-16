@@ -39,7 +39,7 @@ public class Product implements Serializable {
     @Column(columnDefinition = "TEXT")
     private String icon;
 
-    @ManyToOne(cascade= CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.ALL)
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Category category;
 
@@ -48,7 +48,7 @@ public class Product implements Serializable {
     private LocalDateTime createdTime = LocalDateTime.now(ZoneOffset.UTC);
 
     @OneToMany(targetEntity = ProductDetail.class, cascade = {
-            CascadeType.ALL }, orphanRemoval = true, mappedBy = "product")
+            CascadeType.ALL}, orphanRemoval = true, mappedBy = "product")
     private Set<ProductDetail> productDetails = new HashSet<>();
 
     public Product() {
@@ -58,7 +58,7 @@ public class Product implements Serializable {
         this.name = productResponse.getProductName();
         this.icon = productResponse.getImage();
         this.category = category;
-        this.searchableName = VNCharacterUtil.removeAccent(productResponse.getProductName().toLowerCase()).replaceAll("[^a-zA-Z0-9 ]", "");
+        this.searchableName = VNCharacterUtil.generateSearchableText(productResponse.getProductName());
     }
 
     public Long getId() {

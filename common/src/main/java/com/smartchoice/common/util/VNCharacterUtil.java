@@ -42,4 +42,8 @@ public class VNCharacterUtil {
         }
         return sb.toString();
     }
+
+    public static String generateSearchableText(String str) {
+        return VNCharacterUtil.removeAccent(str.toLowerCase()).replaceAll("[^a-zA-Z0-9 ]", "");
+    }
 }
