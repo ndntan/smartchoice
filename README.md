@@ -110,6 +110,10 @@ This service will fetch the data from the Sendo platform when receiving a reques
 
 ![Smartchoice architect](https://user-images.githubusercontent.com/80661119/111290800-18319700-8679-11eb-96c9-e0bcb5880291.png)
 
+### Sequence diagram
+![Smartchoice](https://user-images.githubusercontent.com/80661119/111322824-e847bb00-869b-11eb-930c-519dde68378d.png)
+
+
 ### RabbitMQ: Message integrity
 
 Sometimes it is necessary to execute certain operations decoupled from the rest of your business logic. We needed to send an update to an external system (e.g. an audit log). The update itself is not necessary for the operation of our own user flows. The user should not be aware of failures. This is why we decided to build it using messaging.
