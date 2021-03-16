@@ -221,7 +221,7 @@ psql -h localhost -d smartchoice -U tan
 CREATE EXTENSION pg_trgm;
 ```
 
-##### Build the my own services
+##### Build my services
 
 ###### Step 1. Clone my source code
 
