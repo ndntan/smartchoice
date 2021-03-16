@@ -101,6 +101,14 @@ This service will fetch the data from the Tiki platform when receiving a request
 
 This service will fetch the data from the Sendo platform when receiving a request from Product processor.
 
+## Design solution
+### UML diagram
+
+![category](https://user-images.githubusercontent.com/80661119/111285159-6ba0e680-8673-11eb-88d1-ba1e78c6144b.png)
+
+### Architecture
+<TBC>
+	
 ## Usage
 
 ### Prerequisites to run this eco-services
