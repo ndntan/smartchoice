@@ -26,7 +26,7 @@
         <slf4j.version>1.6.1</slf4j.version>
         <sensolus.descriptor>5.2</sensolus.descriptor>
         <swagger.version>1.5.8</swagger.version>
-        <docker.repo>ndnhuttan/com.smartchoice</docker.repo>
+        <docker.repo>ndnhuttan/smartchoice</docker.repo>
     </properties>
 
     <dependencyManagement>
