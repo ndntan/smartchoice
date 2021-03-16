@@ -1,6 +1,5 @@
 # SMARTCHOICE
 
-[![CircleCI](https://circleci.com/gh/ardanlabs/service.svg?style=svg)](https://circleci.com/gh/ardanlabs/service)
 
 Copyright 2021, Tan Nguyen Dang Nhut ndnhuttan@outlook.com
 
