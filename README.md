@@ -25,7 +25,9 @@ It acts as if it scrapes data from the web platform (hence the name - web scrapi
 The method is rather simple: a specially trained algorithm, which is also an automated code, goes to the main page of an online resource and begins to visit each internal link, parse an HTML document, search for data, and convert it to the specified format.
 
 ##### Pros:
-getting data is very easy; you don’t even need permission from the owner of the resource;
+getting data is very easy; 
+
+you don’t even need permission from the owner of the resource;
 
 there is a chance to increase the database to the level of competitors in a short time period;
 
